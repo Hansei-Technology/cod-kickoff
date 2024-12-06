@@ -46,37 +46,31 @@ public class Auto2Specimene extends LinearOpMode {
         oriz.goToPoz(0.4);
         joint.goToLevel();
         cleste.close();
+        vert.goToHigh();
 
         waitForStart();
 
 
-        vert.goToHigh();
-
         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                        .waitSeconds(0.5)
                 .lineToLinearHeading(PRELOAD)
                 .addTemporalMarker( () -> {
                     vert.goToMid();
                 })
                 .waitSeconds(0)
-                .waitSeconds(0.4)
+                .waitSeconds(0.2)
                         .waitSeconds(0)
                         .addTemporalMarker( () -> {
                             cleste.open();
                         })
-                        .waitSeconds(0.5)
-                        .waitSeconds(0)
-                        .waitSeconds(0.5)
+                        .waitSeconds(0.2)
                 .addTemporalMarker( () -> {
                     vert.goDown();
                 })
-                .waitSeconds(0)
                 .lineToLinearHeading(SAFE)
                 .lineToLinearHeading(SAFE2)
                 .lineToLinearHeading(ELEM1)
                 .lineToLinearHeading(HUMAN)
                         .lineToLinearHeading(SAFE3)
-                        .waitSeconds(1.5)
                         .lineToLinearHeading(SPECIMEN)
                         .addTemporalMarker( () -> {
                             vert.goToCapuUrsului();

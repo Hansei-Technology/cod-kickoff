@@ -25,6 +25,8 @@ public class AutoOpSasiu extends LinearOpMode {
     public static double HUMAN2_x = 3.33, HUMAN2_y = -25.8 + 2.84, HUMAN2_heading = 180;
     public static double ELEM3_x = 23.7, ELEM3_y = -27.4 + 2.84, ELEM3_heading = 270;
     public static double HUMAN3_x = 3.33, HUMAN3_y = -27.4 + 2.84, HUMAN3_heading = 270;
+    public static double PARK_x = 2.4, PARK_y = -19.75 + 2.84, PARK_heading = 0;
+    public static double orizPosElem3 = 0.6;
 
 
     public void runOpMode() throws InterruptedException{
@@ -43,21 +45,33 @@ public class AutoOpSasiu extends LinearOpMode {
         Pose2d HUMAN2 = new Pose2d(HUMAN2_x, HUMAN2_y, Math.toRadians(HUMAN2_heading));
         Pose2d ELEM3 = new Pose2d(ELEM3_x, ELEM3_y, Math.toRadians(ELEM3_heading));
         Pose2d HUMAN3 = new Pose2d(HUMAN3_x, HUMAN3_y, Math.toRadians(HUMAN3_heading));
+        Pose2d PARK = new Pose2d(PARK_x, PARK_y, Math.toRadians(PARK_heading));
+
+        Cleste cleste = new Cleste(hardwareMap);
+        Joint joint = new Joint(hardwareMap);
+        Vert vert = new Vert(hardwareMap);
+        Oriz oriz = new Oriz(hardwareMap);
+
+        oriz.goToPoz(0.4);
+        joint.goToLevel();
+        cleste.close();
+        vert.goToHigh();
 
         waitForStart();
 
-
-
         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                .waitSeconds(0.5)
                 .lineToLinearHeading(PRELOAD)
-                .waitSeconds(0)
-                .waitSeconds(0.4)
-                .waitSeconds(0)
-                .waitSeconds(0.5)
-                .waitSeconds(0)
-                .waitSeconds(0.5)
-                .waitSeconds(0)
+                .addTemporalMarker( () -> {
+                    vert.goToMid();
+                })
+                .waitSeconds(0.2)
+                .addTemporalMarker( () -> {
+                    cleste.open();
+                })
+                .waitSeconds(0.2)
+                .addTemporalMarker( () -> {
+                    vert.goDown();
+                })
                         .setReversed(true)
                 .splineToLinearHeading(SAFE, 270)
                 .lineToLinearHeading(ELEM1)
@@ -67,27 +81,68 @@ public class AutoOpSasiu extends LinearOpMode {
                         .lineToLinearHeading(HUMAN2)
                         .lineToLinearHeading(ELEM2)
                         .lineToLinearHeading(ELEM3)
+                        .addTemporalMarker( () -> {
+                            oriz.goToPoz(orizPosElem3);
+                            joint.goToMid();
+                        })
                         .lineToLinearHeading(HUMAN3)
                 .lineToLinearHeading(SAFE3)
-                .waitSeconds(1.5)
+                        .addTemporalMarker( () -> {
+                            oriz.goToPoz(0.4);
+                            joint.goToLevel();
+                        })
                 .lineToLinearHeading(SPECIMEN)
-                .waitSeconds(0.1)
-                .waitSeconds(0)
+                        .addTemporalMarker( () -> {
+                            cleste.close();
+                            vert.goToHigh();
+                        })
                 .lineToLinearHeading(PRELOAD)
-                .waitSeconds(0)
-                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
+                    vert.goToMid();
+                })
+                .waitSeconds(0.2)
+                .addTemporalMarker( () -> {
+                    cleste.open();
+                })
+                .waitSeconds(0.2)
+                .addTemporalMarker( () -> {
+                    vert.goToCapuUrsului();
+                })
                 .lineToLinearHeading(SPECIMEN)
-                .waitSeconds(0.1)
-                .waitSeconds(0)
+                        .addTemporalMarker( () -> {
+                            cleste.close();
+                            vert.goToHigh();
+                        })
                 .lineToLinearHeading(PRELOAD)
-                .waitSeconds(0)
-                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
+                    vert.goToMid();
+                })
+                .waitSeconds(0.2)
+                .addTemporalMarker( () -> {
+                    cleste.open();
+                })
+                .waitSeconds(0.2)
+                .addTemporalMarker( () -> {
+                    vert.goToCapuUrsului();
+                })
                 .lineToLinearHeading(SPECIMEN)
-                .waitSeconds(0.1)
-                .waitSeconds(0)
+                .addTemporalMarker( () -> {
+                    cleste.close();
+                    vert.goToHigh();
+                })
                 .lineToLinearHeading(PRELOAD)
-                .waitSeconds(0)
-                .waitSeconds(0.5)
+                .addTemporalMarker( () -> {
+                    vert.goToMid();
+                })
+                .waitSeconds(0.2)
+                .addTemporalMarker( () -> {
+                    cleste.open();
+                })
+                .waitSeconds(0.2)
+                .addTemporalMarker( () -> {
+                    vert.goDown();
+                })
+                        .lineToLinearHeading(PARK)
                 .build());
 
         while(opModeIsActive() && gamepad1.a == false) {
