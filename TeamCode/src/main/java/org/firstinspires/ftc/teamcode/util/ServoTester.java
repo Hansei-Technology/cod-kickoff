@@ -15,10 +15,9 @@ public class ServoTester extends LinearOpMode {
     public static String port = "";
     public static double pos = 0.5;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
-
-
         servo = hardwareMap.get(Servo.class, port);
         waitForStart();
         while (opModeIsActive()){

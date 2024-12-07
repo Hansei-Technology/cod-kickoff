@@ -14,6 +14,7 @@ public class TeleOp extends LinearOpMode {
     Oriz oriz;
     Vert vert;
     StickyGamepad sticky1;
+    Rotation rotatie;
 
 
 
@@ -31,6 +32,7 @@ public class TeleOp extends LinearOpMode {
         while(opModeInInit()){
             cleste.close();
             joint.goToLevel();
+            vert.goDown();
         }
 
         waitForStart();
@@ -86,6 +88,10 @@ public class TeleOp extends LinearOpMode {
 
             if(sticky1.left_bumper){
                 cleste.toggle();
+            }
+
+            if(sticky1.dpad_up){
+                rotatie.toggle();
             }
             
 

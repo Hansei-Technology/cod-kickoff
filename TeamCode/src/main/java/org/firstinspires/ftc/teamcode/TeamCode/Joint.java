@@ -11,7 +11,8 @@ public class Joint {
     Servo servo;
 
     public Joint(HardwareMap map){
-        servo = map.get(Servo.class, "s1");
+        servo = map.get(Servo.class, "s4");
+        servo.setDirection(Servo.Direction.REVERSE);
     }
 
     public enum Status{

@@ -8,12 +8,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Oriz {
 
     Servo motor;
-    public static double max = 0.58;
-    public static double min = 0.47;
+    public static double max = 1;
+    public static double min = 0.4;
     public static double viteza = 0.001;
 
     public Oriz(HardwareMap map){
-        motor = map.get(Servo.class, "s0");
+        motor = map.get(Servo.class, "s1");
     }
 
     public void goToPoz(double poz) {
