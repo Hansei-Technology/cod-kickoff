@@ -19,11 +19,12 @@ public class Vert {
     public static double magicPOWER = -0.4;
     public int position;
     public static int MAX_POS = 680;
-    public static int HIGH_POS = 2280;
+    public static int HIGH_POS = 2050;
     public static int LOW_POS = 0;
-    public static int MID_POS = 1500;
+    public static int MID_POS = 1250;
     public static int COS_POS = 2700;
     public boolean pidON = true;
+    public static double DEFAULT = 200;
     public static int ursu = 300;
 
     public enum States {
@@ -61,35 +62,35 @@ public class Vert {
         timer = new ElapsedTime();
     }
 
-    public void setPower(double power) {
-        if(power > 0.1 || power < -0.1) {
-            pidON = false;
-            if(position < MAX_POS - 50 && power > 0) {
-                left.setPower(power);
-                right.setPower(power);
-                currentState = States.EXTENDED;
-            }
-            if(position > 10 && power < 0) {
-                left.setPower(power);
-                right.setPower(power);
-            }
-        }
-    }
+//    public void setPower(double power) {
+//        if(power > 0.1 || power < -0.1) {
+//            pidON = false;
+//            if(position < MAX_POS - 50 && power > 0) {
+//                left.setPower(power);
+//                right.setPower(power);
+//                currentState = States.EXTENDED;
+//            }
+//            if(position > 10 && power < 0) {
+//                left.setPower(power);
+//                right.setPower(power);
+//            }
+//        }
+//    }
 
 
     public void goDown() {
         pidON = true;
-        pidController.targetValue = 0;
+        pidController.targetValue = DEFAULT;
         currentState = States.RETRACT_PID;
     }
 
-    public void goDownTillMotorOverCurrent() {
-        timer.reset();
-        left.setPower(magicPOWER);
-        right.setPower(magicPOWER);
-        currentState = States.RETRACT_MAGIC;
-        pidON = false;
-    }
+//    public void goDownTillMotorOverCurrent() {
+//        timer.reset();
+//        left.setPower(magicPOWER);
+//        right.setPower(magicPOWER);
+//        currentState = States.RETRACT_MAGIC;
+//        pidON = false;
+//    }
 
     public void update() {
         if(pidON)
@@ -110,17 +111,17 @@ public class Vert {
                     if(position <= 5) currentState = States.RETRACTED;
                     break;
                 }
-                case RETRACT_MAGIC:
-                {
-                    if(left.isOverCurrent() || right.isOverCurrent() || timer.milliseconds() > time_for_MAGIC)
-                    {
-                        ResetEncoders();
-                        pidController.targetValue = 0;
-                        pidON = true;
-                        currentState = States.RETRACTED;
-                    }
-                    break;
-                }
+//                case RETRACT_MAGIC:
+//                {
+//                    if(left.isOverCurrent() || right.isOverCurrent() || timer.milliseconds() > time_for_MAGIC)
+//                    {
+//                        ResetEncoders();
+//                        pidController.targetValue = 0;
+//                        pidON = true;
+//                        currentState = States.RETRACTED;
+//                    }
+//                    break;
+//                }
             }
 
             double powerExtendo = pidController.update(position);

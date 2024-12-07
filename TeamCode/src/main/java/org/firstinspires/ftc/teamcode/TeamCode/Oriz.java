@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Oriz {
 
     Servo motor;
-    public static double max = 1;
-    public static double min = 0.4;
+    public static double max = 0.9;
+    public static double min = 0.3;
     public static double viteza = 0.001;
 
     public Oriz(HardwareMap map){

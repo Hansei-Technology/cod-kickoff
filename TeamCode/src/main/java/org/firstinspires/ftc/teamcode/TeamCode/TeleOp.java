@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeamCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Utils.StickyGamepad;
 
@@ -15,6 +13,8 @@ public class TeleOp extends LinearOpMode {
     Vert vert;
     StickyGamepad sticky1;
     Rotation rotatie;
+    Intake intake;
+
 
 
 
@@ -26,18 +26,24 @@ public class TeleOp extends LinearOpMode {
         oriz = new Oriz(hardwareMap);
         vert = new Vert(hardwareMap);
         sticky1 = new StickyGamepad(gamepad1, this);
+        rotatie = new Rotation(hardwareMap);
+        intake = new Intake(hardwareMap, vert);
 
 
 
-        while(opModeInInit()){
-            cleste.close();
-            joint.goToLevel();
-            vert.goDown();
-        }
 
         waitForStart();
 
+        cleste.close();
+        joint.goToLevel();
+        rotatie.paralel();
+        oriz.close();
+        vert.goDown();
+
         while(opModeIsActive()){
+
+
+
             sasiu.move(gamepad1);
             vert.update();
             sticky1.update();
@@ -61,7 +67,11 @@ public class TeleOp extends LinearOpMode {
             }
 
             if(gamepad1.x){
-                vert.goToCos();
+                intake.collect();
+            }
+
+            if(gamepad1.right_stick_button){
+                intake.resetCollect();
             }
 
             if(gamepad1.dpad_right){
@@ -93,8 +103,8 @@ public class TeleOp extends LinearOpMode {
             if(sticky1.dpad_up){
                 rotatie.toggle();
             }
-            
 
+            intake.update();
             vert.update();
         }
     }

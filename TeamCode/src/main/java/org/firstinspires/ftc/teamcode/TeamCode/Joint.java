@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Joint {
 
-    public static double downPos = 0.3;
-    public static double midPos = 0.42;
-    public static double levelPos = 0.6;
+    public static double downPos = 0.6;
+    public static double midPos = 0.7;
+    public static double levelPos = 0.9;
     Servo servo;
 
     public Joint(HardwareMap map){

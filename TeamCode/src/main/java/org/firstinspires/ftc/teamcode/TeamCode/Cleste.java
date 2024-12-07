@@ -39,4 +39,13 @@ public class Cleste {
         status = Stauts.CLOSED;
         servo.setPosition(closePos);
     }
+
+    public boolean isOpen(){
+        if(status == Stauts.OPEN){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
